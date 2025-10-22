@@ -8,6 +8,7 @@ function App() {
       style={{backgroundImage: `url('${heroImage}')`}}
     >
       <img src={logo} alt="Translate Logo"
+        width="137" height="45"
         className='block mx-auto mb-13'
       />
       <TranslationContainer />
