@@ -6,7 +6,7 @@ import switchIcon from '../assets/icons/horizontal_top_left_main.svg'
 
 // https://mymemory.translated.net/doc/spec.php
 
-function TranslationOutput({translatedText, setTranslatedText, translateTo, setTranslateTo}) {
+function TranslationOutput({translatedText, setTranslatedText, translateTo, setTranslateTo, onSwitchText}) {
 	const translateToOptions = ['English', 'French', 'Spanish']
 	
 	const handleInputChange = (event) => {
@@ -44,7 +44,7 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 					)
 				})}
 				
-				<SmallIconButton className="ml-auto p-1" iconUrl={switchIcon} />
+				<SmallIconButton className="ml-auto p-1" iconUrl={switchIcon} onClick={onSwitchText} />
 			</div>
 			<div className='relative mb-3 border-solid border-t-2 border-gray-800'>
 				<textarea name="user-input" id=""
@@ -54,7 +54,7 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 				>
 				</textarea>
 			</div>
-			<div className="flex justify-between items-end flex-wrap">
+			<div className="mt-auto flex justify-between items-end flex-wrap">
 				<div className="relative space-x-2">
 					<SmallIconButton iconUrl={speechIcon} />
 					<SmallIconButton iconUrl={copyIcon} onClick={handleCopy} />

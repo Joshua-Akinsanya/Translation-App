@@ -9,6 +9,13 @@ function TranslationContainer() {
 	const [translateFrom, setTranslateFrom] = useState('English')
 	const [translateTo, setTranslateTo] = useState('French')
 
+	const handleSwitchText = () => {
+		setInputText(translatedText)
+		setTranslatedText(inputText)
+		setTranslateFrom(translateTo)
+		setTranslateTo(translateFrom)
+	}
+
 	return (
 		<div className="grid md:flex gap-4 mx-6 lg:mx-18">
 			<TranslationInput
@@ -22,6 +29,7 @@ function TranslationContainer() {
 				setTranslatedText={setTranslatedText}
 				translateTo={translateTo}
 				setTranslateTo={setTranslateTo}
+				onSwitchText={handleSwitchText}
 			/>
 		</div>
 	)

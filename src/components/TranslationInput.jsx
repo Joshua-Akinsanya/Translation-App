@@ -41,7 +41,7 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 	}
 
 	return (
-		<div className="bg-black2-alpha-80 p-5.5 border-solid border-gray-700 border-2 rounded-3xl flex-1 grid">
+		<div className="bg-black2-alpha-80 p-5.5 border-solid border-gray-700 border-2 rounded-3xl flex-1">
 			<div className="mb-4 space-x-3">
 				{translateFromOptions.map(option => {
 					return (
