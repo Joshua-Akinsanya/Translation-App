@@ -1,5 +1,5 @@
 import TranslationContainer from './components/TranslationContainer'
-import heroImage from './assets/bg-images/hero_img.jpg'
+import { heroImage } from './assets/images.js'
 import logo from '../public/logo.svg'
 
 function App() {

@@ -1,16 +1,26 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import TranslateButton from "./TranslateButton"
 import SmallIconButton from "./SmallIconButton"
+import { LangPairsContext } from '../Contexts/LangPairsContext.js'
+import textToSpeech from '../textToSpeech.js'
 // import axios from 'axios'
-import speechIcon from '../assets/icons/sound_max_fill.svg'
-import copyIcon from '../assets/icons/copy.svg'
+import { speechIcon, copyIcon } from '../assets/images.js'
 
 // https://mymemory.translated.net/doc/spec.php
 
 function TranslationInput({inputText, setInputText, translateFrom, setTranslateFrom}) {
 	// const baseURL = 'https://api.mymemory.translated.net/get?'
 
+	// Tooltip is meant to show a feedback message when clicking buttons
+	const [tooltip, setTooltip] = useState({
+		hidden: true,
+		message: ""
+	})
+
 	const translateFromOptions = ['Detect Language', 'English', 'French', 'Spanish']
+	// Contains ISO language codes for 'from' language and 'to' language
+	// Will be used when translating as codes are needed
+	const langsFromTo = useContext(LangPairsContext)
 
 	const handleInputChange = (event) => {
 		const str = event.target.value
@@ -21,15 +31,11 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 
 	const handleTranslation = () => {
 		console.log('Translation works but commented out for now')
+		console.log(langsFromTo)
 		// axios.get(`${baseURL}q=${inputText}&langpair=en|fr`)
 		// 	.then(response => console.log(response.data))
 		// 	.catch(error => console.log(error))
 	}
-
-	const [tooltip, setTooltip] = useState({
-		hidden: true,
-		message: ""
-	})
 
 	const handleCopy = () => {
 		window.navigator.clipboard.writeText(inputText)
@@ -38,6 +44,10 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 		setTimeout(() => {
 			setTooltip({hidden: true, message: ''})
 		}, 1500)
+	}
+
+	const handlePlaySpeech = () => {
+		textToSpeech(inputText)
 	}
 
 	return (
@@ -65,7 +75,7 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 			</div>
 			<div className="flex justify-between items-end flex-wrap">
 				<div className="relative space-x-2">
-					<SmallIconButton iconUrl={speechIcon} />
+					<SmallIconButton iconUrl={speechIcon} onClick={handlePlaySpeech} />
 					<SmallIconButton iconUrl={copyIcon} onClick={handleCopy} />
 					<div className={`${ tooltip.hidden?'hidden':'' } absolute -top-full left-4 py-1 px-1.5 rounded-md bg-lightgray text-gray-800 text-xs font-bold`}>
 						{ !tooltip.hidden && tooltip.message }

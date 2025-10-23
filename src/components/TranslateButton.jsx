@@ -1,4 +1,4 @@
-import alfa from '../assets/icons/sort_alfa.svg'
+import { alfa } from "../assets/images.js"
 
 function TranslateButton({onClick}) {
 	return (

@@ -1,25 +1,25 @@
 import { useState } from 'react'
 import SmallIconButton from "./SmallIconButton"
-import speechIcon from '../assets/icons/sound_max_fill.svg'
-import copyIcon from '../assets/icons/copy.svg'
-import switchIcon from '../assets/icons/horizontal_top_left_main.svg'
+import textToSpeech from '../textToSpeech.js'
+import { speechIcon, copyIcon, switchIcon } from '../assets/images.js'
 
 // https://mymemory.translated.net/doc/spec.php
 
 function TranslationOutput({translatedText, setTranslatedText, translateTo, setTranslateTo, onSwitchText}) {
+	// Tooltip is meant to show a feedback message when clicking buttons
+	const [tooltips, setTooltips] = useState({
+		hidden: true,
+		message: ""
+	})
+
 	const translateToOptions = ['English', 'French', 'Spanish']
-	
+
 	const handleInputChange = (event) => {
 		const str = event.target.value
 		if(str.length <= 500) {
 			setTranslatedText(event.target.value)
 		}
 	}
-
-	const [tooltips, setTooltips] = useState({
-		hidden: true,
-		message: ""
-	})
 
 	const handleCopy = () => {
 		window.navigator.clipboard.writeText(translatedText)
@@ -29,10 +29,14 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 			setTooltips({hidden: true, message: ''})
 		}, 1500)
 	}
+
+	const handlePlaySpeech = () => {
+		textToSpeech(translatedText)
+	}
 	
 	return (
 		<div className="bg-black-alpha-80 p-5.5 border-solid border-gray-700 border-2 rounded-3xl flex-1 grid">
-			<div className="mb-4 space-x-3 flex items-center">
+			<div className="mb-4 space-x-3 flex items-center flex-wrap">
 				{translateToOptions.map(option => {
 					return (
 						<button
@@ -56,7 +60,7 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 			</div>
 			<div className="mt-auto flex justify-between items-end flex-wrap">
 				<div className="relative space-x-2">
-					<SmallIconButton iconUrl={speechIcon} />
+					<SmallIconButton iconUrl={speechIcon} onClick={handlePlaySpeech} />
 					<SmallIconButton iconUrl={copyIcon} onClick={handleCopy} />
 					<div className={`${ tooltips.hidden?'hidden':'' } absolute -top-full left-4 py-1 px-1.5 rounded-md bg-lightgray text-gray-800 text-xs font-bold`}>
 						{ !tooltips.hidden && tooltips.message }
