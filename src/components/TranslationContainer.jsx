@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import TranslationInput from "./TranslationInput"
 import TranslationOutput from "./TranslationOutput"
-import { LangPairsContext } from '../Contexts/LangPairsContext.js'
-import langpairs from './langpairs'
+import { LangCodesContext } from '../Contexts/LangCodesContext.js'
+import langCodes from './langCodes'
 
 function TranslationContainer() {
 	const [inputText, setInputText] = useState('Hello, how are you?')
@@ -23,7 +23,7 @@ function TranslationContainer() {
 			{/* Maybe Context wasn't needed here since it is being used directly in TranslationInput Component
 				but I'll keep just to practice how to use it */}
 				
-			<LangPairsContext value={{from: langpairs[translateFrom], to: langpairs[translateTo]}}>
+			<LangCodesContext value={{from: langCodes[translateFrom], to: langCodes[translateTo]}}>
 				<TranslationInput
 					inputText={inputText}
 					setInputText={setInputText}
@@ -37,7 +37,7 @@ function TranslationContainer() {
 					setTranslateTo={setTranslateTo}
 					onSwitchText={handleSwitchText}
 				/>
-			</LangPairsContext>
+			</LangCodesContext>
 		</div>
 	)
 }

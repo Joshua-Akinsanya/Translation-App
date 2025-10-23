@@ -1,8 +1,9 @@
 import { useState, useContext } from 'react'
 import TranslateButton from "./TranslateButton"
 import SmallIconButton from "./SmallIconButton"
-import { LangPairsContext } from '../Contexts/LangPairsContext.js'
+import { LangCodesContext } from '../Contexts/LangCodesContext.js'
 import textToSpeech from '../textToSpeech.js'
+import langCodes from './langCodes.js'
 // import axios from 'axios'
 import { speechIcon, copyIcon } from '../assets/images.js'
 
@@ -20,7 +21,7 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 	const translateFromOptions = ['Detect Language', 'English', 'French', 'Spanish']
 	// Contains ISO language codes for 'from' language and 'to' language
 	// Will be used when translating as codes are needed
-	const langsFromTo = useContext(LangPairsContext)
+	const langsFromTo = useContext(LangCodesContext)
 
 	const handleInputChange = (event) => {
 		const str = event.target.value
@@ -47,7 +48,8 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 	}
 
 	const handlePlaySpeech = () => {
-		textToSpeech(inputText)
+		const code = langCodes[translateFrom]
+		textToSpeech(inputText, code)
 	}
 
 	return (

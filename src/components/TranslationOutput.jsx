@@ -2,6 +2,7 @@ import { useState } from 'react'
 import SmallIconButton from "./SmallIconButton"
 import textToSpeech from '../textToSpeech.js'
 import { speechIcon, copyIcon, switchIcon } from '../assets/images.js'
+import langCodes from './langCodes.js'
 
 // https://mymemory.translated.net/doc/spec.php
 
@@ -31,7 +32,8 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 	}
 
 	const handlePlaySpeech = () => {
-		textToSpeech(translatedText)
+		const code = langCodes[translateTo]
+		textToSpeech(translatedText, code)
 	}
 	
 	return (
@@ -47,7 +49,7 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 						>{option}</button>
 					)
 				})}
-				
+
 				<SmallIconButton className="ml-auto p-1" iconUrl={switchIcon} onClick={onSwitchText} />
 			</div>
 			<div className='relative mb-3 border-solid border-t-2 border-gray-800'>
