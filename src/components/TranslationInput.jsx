@@ -4,13 +4,13 @@ import SmallIconButton from "./SmallIconButton"
 import { LangCodesContext } from '../Contexts/LangCodesContext.js'
 import textToSpeech from '../textToSpeech.js'
 import langCodes from './langCodes.js'
-// import axios from 'axios'
+import axios from 'axios'
 import { speechIcon, copyIcon } from '../assets/images.js'
 
 // https://mymemory.translated.net/doc/spec.php
 
-function TranslationInput({inputText, setInputText, translateFrom, setTranslateFrom}) {
-	// const baseURL = 'https://api.mymemory.translated.net/get?'
+function TranslationInput({inputText, setInputText, translateFrom, setTranslateFrom, setTranslatedText, setLoading, setError }) {
+	const baseURL = 'https://api.mymemory.translated.net/get?'
 
 	// Tooltip is meant to show a feedback message when clicking buttons
 	const [tooltip, setTooltip] = useState({
@@ -31,11 +31,19 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 	}
 
 	const handleTranslation = () => {
-		console.log('Translation works but commented out for now')
-		console.log(langsFromTo)
-		// axios.get(`${baseURL}q=${inputText}&langpair=en|fr`)
-		// 	.then(response => console.log(response.data))
-		// 	.catch(error => console.log(error))
+		setError(null)
+		setLoading(true)
+		axios.get(`${baseURL}q=${inputText}&langpair=${langsFromTo.from}|${langsFromTo.to}`)
+			.then(response => {
+				setTranslatedText(response.data.responseData.translatedText)
+			})
+			.catch(error => {
+				console.error(error.message)
+				setError('An error occurred')
+			})
+			.finally(() => {
+				setLoading(false)
+			})
 	}
 
 	const handleCopy = () => {

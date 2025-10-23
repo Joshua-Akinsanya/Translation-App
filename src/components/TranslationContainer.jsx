@@ -11,6 +11,9 @@ function TranslationContainer() {
 	const [translateFrom, setTranslateFrom] = useState('English')
 	const [translateTo, setTranslateTo] = useState('French')
 
+	const [error, setError] = useState(null)
+	const [loading, setLoading] = useState(false)
+
 	const handleSwitchText = () => {
 		setInputText(translatedText)
 		setTranslatedText(inputText)
@@ -29,6 +32,9 @@ function TranslationContainer() {
 					setInputText={setInputText}
 					translateFrom={translateFrom}
 					setTranslateFrom={setTranslateFrom}
+					setTranslatedText={setTranslatedText}
+					setLoading={setLoading}
+					setError={setError}
 				/>
 				<TranslationOutput
 					translatedText={translatedText}
@@ -36,6 +42,8 @@ function TranslationContainer() {
 					translateTo={translateTo}
 					setTranslateTo={setTranslateTo}
 					onSwitchText={handleSwitchText}
+					loading={loading}
+					error={error}
 				/>
 			</LangCodesContext>
 		</div>
