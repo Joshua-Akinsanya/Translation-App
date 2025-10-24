@@ -3,6 +3,7 @@ import TranslationInput from "./TranslationInput"
 import TranslationOutput from "./TranslationOutput"
 import { LangCodesContext } from '../Contexts/LangCodesContext.js'
 import langCodes from './langCodes'
+import useToast from './Toast/useToast.js'
 
 function TranslationContainer() {
 	const [inputText, setInputText] = useState('Hello, how are you?')
@@ -14,18 +15,21 @@ function TranslationContainer() {
 	const [error, setError] = useState(null)
 	const [loading, setLoading] = useState(false)
 
+	const toast = useToast()
+
 	const handleSwitchText = () => {
 		setInputText(translatedText)
 		setTranslatedText(inputText)
 		setTranslateFrom(translateTo)
 		setTranslateTo(translateFrom)
+		toast.open('Switched texts')
 	}
 
 	return (
 		<div className="grid md:flex gap-4 mx-6 lg:mx-18">
 			{/* Maybe Context wasn't needed here since it is being used directly in TranslationInput Component
 				but I'll keep just to practice how to use it */}
-				
+			
 			<LangCodesContext value={{from: langCodes[translateFrom], to: langCodes[translateTo]}}>
 				<TranslationInput
 					inputText={inputText}

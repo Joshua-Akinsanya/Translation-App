@@ -1,27 +1,25 @@
-import { useState, useContext } from 'react'
+import { useContext } from 'react'
 import TranslateButton from "./TranslateButton"
 import SmallIconButton from "./SmallIconButton"
 import { LangCodesContext } from '../Contexts/LangCodesContext.js'
-import textToSpeech from '../textToSpeech.js'
+import textToSpeech from '../functions/textToSpeech.js'
 import langCodes from './langCodes.js'
 import axios from 'axios'
 import { speechIcon, copyIcon } from '../assets/images.js'
+import useToast from './Toast/useToast.js'
 
 // https://mymemory.translated.net/doc/spec.php
 
 function TranslationInput({inputText, setInputText, translateFrom, setTranslateFrom, setTranslatedText, setLoading, setError }) {
 	const baseURL = 'https://api.mymemory.translated.net/get?'
 
-	// Tooltip is meant to show a feedback message when clicking buttons
-	const [tooltip, setTooltip] = useState({
-		hidden: true,
-		message: ""
-	})
-
 	const translateFromOptions = ['Detect Language', 'English', 'French', 'Spanish']
 	// Contains ISO language codes for 'from' language and 'to' language
 	// Will be used when translating as codes are needed
 	const langsFromTo = useContext(LangCodesContext)
+	
+	// Use Toast Context to access toast functionality
+	const toast = useToast()
 
 	const handleInputChange = (event) => {
 		const str = event.target.value
@@ -48,11 +46,7 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 
 	const handleCopy = () => {
 		window.navigator.clipboard.writeText(inputText)
-		setTooltip({hidden: false, message: 'Copied'})
-		
-		setTimeout(() => {
-			setTooltip({hidden: true, message: ''})
-		}, 1500)
+		toast.open('Copied', 'Copied to clipboard successfully')
 	}
 
 	const handlePlaySpeech = () => {
@@ -87,9 +81,6 @@ function TranslationInput({inputText, setInputText, translateFrom, setTranslateF
 				<div className="relative space-x-2">
 					<SmallIconButton iconUrl={speechIcon} onClick={handlePlaySpeech} />
 					<SmallIconButton iconUrl={copyIcon} onClick={handleCopy} />
-					<div className={`${ tooltip.hidden?'hidden':'' } absolute -top-full left-4 py-1 px-1.5 rounded-md bg-lightgray text-gray-800 text-xs font-bold`}>
-						{ !tooltip.hidden && tooltip.message }
-					</div>
 				</div>
 				<TranslateButton onClick={handleTranslation} />
 			</div>

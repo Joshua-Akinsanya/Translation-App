@@ -1,19 +1,16 @@
-import { useState } from 'react'
 import SmallIconButton from "./SmallIconButton"
-import textToSpeech from '../textToSpeech.js'
+import textToSpeech from '../functions/textToSpeech.js'
 import { speechIcon, copyIcon, switchIcon } from '../assets/images.js'
 import langCodes from './langCodes.js'
+import useToast from './Toast/useToast.js'
 
 // https://mymemory.translated.net/doc/spec.php
 
 function TranslationOutput({translatedText, setTranslatedText, translateTo, setTranslateTo, onSwitchText, loading, error}) {
-	// Tooltip is meant to show a feedback message when clicking buttons
-	const [tooltips, setTooltips] = useState({
-		hidden: true,
-		message: ""
-	})
-
 	const translateToOptions = ['English', 'French', 'Spanish']
+
+	// use Toast Context
+	const toast = useToast()
 
 	const handleInputChange = (event) => {
 		const str = event.target.value
@@ -24,11 +21,7 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 
 	const handleCopy = () => {
 		window.navigator.clipboard.writeText(translatedText)
-		setTooltips({hidden: false, message: 'Copied'})
-		
-		setTimeout(() => {
-			setTooltips({hidden: true, message: ''})
-		}, 1500)
+		toast.open('Copied', 'Copied to clipboard successfully')
 	}
 
 	const handlePlaySpeech = () => {
@@ -75,9 +68,6 @@ function TranslationOutput({translatedText, setTranslatedText, translateTo, setT
 				<div className="relative space-x-2">
 					<SmallIconButton iconUrl={speechIcon} onClick={handlePlaySpeech} />
 					<SmallIconButton iconUrl={copyIcon} onClick={handleCopy} />
-					<div className={`${ tooltips.hidden?'hidden':'' } absolute -top-full left-4 py-1 px-1.5 rounded-md bg-lightgray text-gray-800 text-xs font-bold`}>
-						{ !tooltips.hidden && tooltips.message }
-					</div>
 				</div>
 			</div>
 		</div>
